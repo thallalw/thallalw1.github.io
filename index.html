@@ -1,0 +1,1485 @@
+<!DOCTYPE html> 
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda Kegiatan Sekolah</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    .container {
+      height: 100vh;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      position: relative;
+    }
+
+    .active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 350px;
+      transform: translateY(20px);
+      transition: transform 0.5s ease;
+    }
+
+    .active .login-box {
+      transform: translateY(0);
+    }
+
+    .login-box img {
+      width: 100px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .login-box img:hover {
+      transform: scale(1.1);
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: bold;
+      color: #e74c3c;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 30px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      background: #f08080;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      background: #e06b6b;
+      box-shadow: 0 0 10px rgba(240, 128, 128, 0.5);
+    }
+
+    .form-input::placeholder {
+      color: white;
+      opacity: 0.8;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 45%;
+      margin: 10px 5px;
+      padding: 12px;
+      border: none;
+      border-radius: 30px;
+      background: #f08080;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      background: #e06b6b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Style untuk homepage murid */
+    .home-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 70%;
+      max-width: 700px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.5s ease;
+    }
+
+    .active .home-box {
+      transform: scale(1);
+    }
+
+    .home-logo {
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 120px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .home-box h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .home-btn {
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      background: #f08080;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .home-btn:hover {
+      background: #e06b6b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* New styles for Panitia Homepage */
+    .panitia-home-box {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px 60px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        max-width: 800px;
+        text-align: center;
+        transform: scale(0.9);
+        transition: transform 0.5s ease;
+    }
+
+    .active .panitia-home-box {
+      transform: scale(1);
+    }
+
+    .panitia-home-box p {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
+
+    .panitia-home-btn {
+        padding: 15px 50px;
+        border: none;
+        border-radius: 30px;
+        background: #f08080;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .panitia-home-btn:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .logo-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .logo-container img {
+      width: 150px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+
+    /* --- Gaya halaman Pendaftaran --- */
+    #pendaftaran {
+      background-image: url('backgrounddaftaran.jpeg');
+      position: relative;
+      flex-direction: column;
+      padding: 50px;
+    }
+
+    .header-pendaftaran {
+        color: white;
+        font-size: 2.5em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 50px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .grid-kegiatan {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        width: 100%;
+        max-width: 900px;
+    }
+
+    .item-kegiatan {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    .active .item-kegiatan {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .item-kegiatan:nth-child(1) { transition-delay: 0.1s; }
+    .item-kegiatan:nth-child(2) { transition-delay: 0.2s; }
+    .item-kegiatan:nth-child(3) { transition-delay: 0.3s; }
+    .item-kegiatan:nth-child(4) { transition-delay: 0.4s; }
+
+    .item-kegiatan:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .item-kegiatan .gambar-lingkaran {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        border: 4px solid #f08080;
+        transition: transform 0.3s ease;
+    }
+
+    .item-kegiatan:hover .gambar-lingkaran {
+        transform: scale(1.1);
+    }
+
+    .item-kegiatan .info-kegiatan {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-kegiatan h4 {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .item-kegiatan p {
+        font-size: 1em;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .btn-join {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 20px;
+        background: #f08080;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn-join:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-kembali-homepage {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        background: #f08080;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-kembali-homepage:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    /* --- Gaya halaman Konfirmasi Pendaftaran --- */
+    #konfirmasi {
+      background-image: url('backgrounddaftaran.jpeg');
+      position: relative;
+    }
+    
+    .konfirmasi-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 60px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 450px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.9);
+      transition: transform 0.5s ease;
+    }
+
+    .active .konfirmasi-box {
+      transform: scale(1);
+    }
+    
+    .konfirmasi-box h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .konfirmasi-box .input-group {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    .konfirmasi-box .konfirmasi-input {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #f08080;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .konfirmasi-box .konfirmasi-input:focus {
+      outline: none;
+      background: #e06b6b;
+      box-shadow: 0 0 10px rgba(240, 128, 128, 0.5);
+    }
+    
+    .konfirmasi-box .konfirmasi-input::placeholder {
+      color: white;
+      opacity: 0.8;
+    }
+    
+    .konfirmasi-box .konfirmasi-btn {
+      width: 48%;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .konfirmasi-box .daftar-btn {
+      background: black;
+      color: white;
+    }
+    
+    .konfirmasi-box .batal-btn {
+      background: white;
+      color: black;
+      border: 2px solid black;
+    }
+    
+    .konfirmasi-box .daftar-btn:hover {
+      background: #333;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    .konfirmasi-box .batal-btn:hover {
+      background: #eee;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* --- Gaya halaman Konfirmasi Berhasil --- */
+    #berhasil {
+      background-image: url('smk_logo.png');
+      position: relative;
+    }
+
+    .berhasil-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 60%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.5s ease;
+    }
+
+    .active .berhasil-box {
+      transform: scale(1);
+    }
+
+    .berhasil-box p {
+      font-size: 20px;
+      font-style: italic;
+      color: #333;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .berhasil-btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      background: #f08080;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .berhasil-btn:hover {
+      background: #e06b6b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* --- Gaya halaman Manajemen Panitia --- */
+    #manajemenPanitia {
+      background-color: #ffc400;
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .panitia-container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .panitia-header {
+      background: white;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .panitia-header .profile {
+      display: flex;
+      align-items: center;
+    }
+
+    .panitia-header .profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #f08080;
+      margin-right: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .panitia-header .profile-pic:hover {
+      transform: scale(1.1);
+    }
+
+    .panitia-header h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 0;
+    }
+
+    .panitia-header .smk-logo {
+      width: 60px;
+      transition: transform 0.3s ease;
+    }
+
+    .panitia-header .smk-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .panitia-main {
+      width: 100%;
+      display: flex;
+      gap: 20px;
+    }
+
+    .left-panel {
+      flex: 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .kegiatan-box {
+      background: #f08080;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      font-weight: bold;
+      transition: all 0.3s ease;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    .active .kegiatan-box {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .kegiatan-box:nth-child(1) { transition-delay: 0.1s; }
+    .kegiatan-box:nth-child(2) { transition-delay: 0.2s; }
+    .kegiatan-box:nth-child(3) { transition-delay: 0.3s; }
+    .kegiatan-box:nth-child(4) { transition-delay: 0.4s; }
+
+    .kegiatan-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .kegiatan-box h4 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .kegiatan-box p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .kegiatan-baru-box {
+      grid-column: span 2;
+      background: #f08080;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .kegiatan-baru-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .btn-panitia {
+      background: #f08080;
+      color: white;
+      padding: 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-panitia:hover {
+      background: #e06b6b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    /* --- Gaya halaman Kelola Agenda --- */
+    #kelolaAgenda {
+        background-image: url('smk_logo.png');
+    }
+
+    .kelola-agenda-box {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        width: 60%;
+        max-width: 800px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        transform: scale(0.9);
+        transition: transform 0.5s ease;
+    }
+
+    .active .kelola-agenda-box {
+      transform: scale(1);
+    }
+
+    .kelola-agenda-box .left-panel {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .kelola-agenda-box .right-panel {
+        flex: 1;
+        text-align: center;
+    }
+
+    .btn-tambah-kegiatan {
+        background: #f08080;
+        color: white;
+        padding: 20px;
+        border: none;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-tambah-kegiatan:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .kelola-agenda-box h2 {
+        font-size: 32px;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .kelola-agenda-box .profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .kelola-agenda-box .profile-pic {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid #f08080;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .kelola-agenda-box .profile-pic:hover {
+        transform: scale(1.1);
+    }
+
+    .kelola-agenda-box .profile h3 {
+        font-size: 24px;
+        color: black;
+        margin-bottom: 20px;
+    }
+    
+    .btn-kelola-agenda {
+        background: #f08080;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-kelola-agenda:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* --- Gaya halaman Editing Agenda --- */
+    #editAgenda {
+        background-color: #f0f0f0;
+        padding: 50px;
+        flex-direction: column;
+    }
+    
+    .edit-agenda-box {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        width: 80%;
+        max-width: 700px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: scale(0.9);
+        transition: transform 0.5s ease;
+    }
+
+    .active .edit-agenda-box {
+      transform: scale(1);
+    }
+    
+    .edit-agenda-box h2 {
+        color: #333;
+        margin-bottom: 30px;
+    }
+    
+    .form-edit-agenda {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .form-edit-agenda label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-edit-agenda input[type="text"],
+    .form-edit-agenda input[type="date"],
+    .form-edit-agenda textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .form-edit-agenda input[type="text"]:focus,
+    .form-edit-agenda input[type="date"]:focus,
+    .form-edit-agenda textarea:focus {
+        border-color: #f08080;
+        outline: none;
+        box-shadow: 0 0 10px rgba(240, 128, 128, 0.3);
+    }
+    
+    .btn-group-edit {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        width: 100%;
+    }
+    
+    .btn-edit-agenda {
+        width: 48%;
+        padding: 15px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-simpan {
+        background: #f08080;
+        color: white;
+    }
+
+    .btn-simpan:hover {
+        background: #e06b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-batal {
+        background: #ccc;
+        color: black;
+    }
+
+    .btn-batal:hover {
+        background: #bbb;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Gaya untuk halaman Daftar Murid */
+    #daftarMurid {
+      background-color: #ffc400;
+      flex-direction: column;
+      padding: 20px;
+      position: relative;
+    }
+
+    .daftar-murid-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.9);
+      transition: transform 0.5s ease;
+    }
+
+    .active .daftar-murid-container {
+      transform: scale(1);
+    }
+
+    .daftar-murid-container .header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .daftar-murid-container .header .profile-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .daftar-murid-container .header .profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #f08080;
+      margin-right: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .daftar-murid-container .header .profile-pic:hover {
+      transform: scale(1.1);
+    }
+    
+    .daftar-murid-container .header .smk-logo {
+      width: 60px;
+      transition: transform 0.3s ease;
+    }
+
+    .daftar-murid-container .header .smk-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .daftar-murid-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      width: 100%;
+    }
+
+    .murid-item {
+        background: #f08080;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    .active .murid-item {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .murid-item:nth-child(1) { transition-delay: 0.1s; }
+    .murid-item:nth-child(2) { transition-delay: 0.2s; }
+    .murid-item:nth-child(3) { transition-delay: 0.3s; }
+    .murid-item:nth-child(4) { transition-delay: 0.4s; }
+    .murid-item:nth-child(5) { transition-delay: 0.5s; }
+    .murid-item:nth-child(6) { transition-delay: 0.6s; }
+
+    .murid-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .murid-item h4 {
+        margin-bottom: 5px;
+    }
+
+    .btn-group-murid {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn-konfirmasi-murid {
+        background: black;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-konfirmasi-murid:hover {
+        background: #333;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-kembali-forum {
+        background: transparent;
+        color: black;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .btn-kembali-forum:hover {
+        background: #eee;
+        transform: translateY(-3px);
+    }
+
+    /* Notification styles */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .notification.success {
+      background-color: #2ecc71;
+    }
+
+    .notification.error {
+      background-color: #e74c3c;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .grid-kegiatan {
+        grid-template-columns: 1fr;
+      }
+      
+      .home-box, .panitia-home-box, .kelola-agenda-box {
+        width: 90%;
+        padding: 20px;
+      }
+      
+      .home-logo {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .btn {
+        width: 100%;
+        margin: 5px 0;
+      }
+      
+      .panitia-main {
+        flex-direction: column;
+      }
+      
+      .daftar-murid-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Notification element -->
+  <div id="notification" class="notification"></div>
+
+  <div id="forum" class="container active" style="background-image: url('smk_logo.png');">
+    <div class="login-box">
+      <img src="logosmk1.png" alt="Logo SMK 1">
+      <h2>FORUM LOGIN</h2>
+      <button class="btn" style="width:100%;" onclick="showPage('murid')">LOGIN MURID</button>
+      <button class="btn" style="width:100%;" onclick="showPage('panitia')">LOGIN PANITIA</button>
+    </div>
+  </div>
+
+  <div id="murid" class="container" style="background-image: url('bgloginmurid.jpg');">
+    <div class="login-box">
+      <h2>FORUM MURID</h2>
+      <form onsubmit="event.preventDefault(); loginMurid();">
+        <div class="form-group">
+          <input type="text" class="form-input" placeholder="NAMA" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" placeholder="KELAS DAN JURUSAN" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-input" placeholder="PASSWORD" required>
+        </div>
+        <button type="submit" class="btn" id="loginMuridBtn">LOGIN</button>
+        <button type="button" class="btn" onclick="showPage('forum')">BATAL</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="panitia" class="container" style="background-image: url('bgloginadmin.jpg');">
+    <div class="login-box">
+      <h2>FORUM PANITIA</h2>
+      <form onsubmit="event.preventDefault(); loginPanitia();">
+        <div class="form-group">
+          <input type="text" class="form-input" id="panitiaIdInput" placeholder="NAMA" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-input" placeholder="PASSWORD" required>
+        </div>
+        <button type="submit" class="btn" id="loginPanitiaBtn">LOGIN</button>
+        <button type="button" class="btn" onclick="showPage('forum')">BATAL</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="homepageMurid" class="container" style="background-image: url('homepagemurid.jpg');">
+    <div class="home-box">
+      <img src="logosmk1.png" alt="Logo SMK 1" class="home-logo">
+      <h3>HOREYY!!! Selamat datang di website agenda kegiatan SMKN 
+        1 Kota Bekasi.<br>
+      Anda diharapkan untuk mengikuti kegiatan yang kami selenggarakan.</h3>
+      <p>Klik tombol berikut untuk melihat kegiatan:</p>
+      <button class="home-btn" onclick="showPage('pendaftaran')">LIHAT DISINI</button>
+    </div>
+  </div>
+
+  <div id="homepagePanitia" class="container" style="background-image: url('smk_logo.png');">
+    <div class="logo-container">
+      <img src="logosmk1.png" alt="Logo SMK 1">
+    </div>
+    <div class="panitia-home-box">
+      <p>selamat datang panitia silahkan <br>kelola atau check agenda serta <br>kegiatan yang ada di SMKN 1</p>
+      <button class="panitia-home-btn" onclick="showPage('kelolaAgenda')">LIHAT DISINI</button>
+    </div>
+  </div>
+
+  <div id="pendaftaran" class="container" style="background-image: url('backgrounddaftaran.jpeg');">
+    <h2 class="header-pendaftaran">silahkan pilih kegiatan yang ingin anda ikuti</h2>
+    <div class="grid-kegiatan">
+      <div class="item-kegiatan">
+        <img src="menari.jpg" alt="Pentas Seni" class="gambar-lingkaran">
+        <div class="info-kegiatan">
+          <h4>PENTAS SENI</h4>
+          <p>akan di mulai 1/12/2025</p>
+          <button class="btn-join" onclick="pilihKegiatan('PENTAS SENI')">JOIN</button>
+        </div>
+      </div>
+      <div class="item-kegiatan">
+        <img src="putsal.jpg" alt="Futsal" class="gambar-lingkaran">
+        <div class="info-kegiatan">
+          <h4>FUTSAL</h4>
+          <p>akan di mulai 4/12/2025</p>
+          <button class="btn-join" onclick="pilihKegiatan('FUTSAL')">JOIN</button>
+        </div>
+      </div>
+      <div class="item-kegiatan">
+        <img src="gambar.jpg" alt="Lomba Menggambar" class="gambar-lingkaran">
+        <div class="info-kegiatan">
+          <h4>LOMBA MENGGAMBAR</h4>
+          <p>akan di mulai 2/12/2025</p>
+          <button class="btn-join" onclick="pilihKegiatan('LOMBA MENGGAMBAR')">JOIN</button>
+        </div>
+      </div>
+      <div class="item-kegiatan">
+        <img src="puisi.jpg" alt="Membaca Puisi" class="gambar-lingkaran">
+        <div class="info-kegiatan">
+          <h4>MEMBACA PUISI</h4>
+          <p>akan di mulai 3/12/2025</p>
+          <button class="btn-join" onclick="pilihKegiatan('MEMBACA PUISI')">JOIN</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn-kembali-homepage" onclick="showPage('homepageMurid')">KEMBALI KE HOMEPAGE</button>
+  </div>
+  
+  <div id="konfirmasi" class="container">
+    <div class="konfirmasi-box">
+      <h2>KONFIRMASI PENDAFTARAN</h2>
+      <div class="input-group">
+        <input type="text" class="konfirmasi-input" id="namaMurid" placeholder="NAMA" required>
+      </div>
+      <div class="input-group">
+        <input type="text" class="konfirmasi-input" id="kelasMurid" placeholder="KELAS" required>
+      </div>
+      <div class="input-group">
+        <input type="password" class="konfirmasi-input" placeholder="PASSWORD" required>
+      </div>
+      <div>
+        <button type="button" class="konfirmasi-btn daftar-btn" onclick="daftarKegiatan()">DAFTAR</button>
+        <button type="button" class="konfirmasi-btn batal-btn" onclick="showPage('pendaftaran')">BATAL</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="berhasil" class="container">
+    <div class="logo-container" style="top: 20px; left: 20px;">
+      <img src="logosmk1.png" alt="Logo SMK 1">
+    </div>
+    <div class="berhasil-box">
+      <p id="pesanBerhasil">SELAMAT!! kamu sudah terdaftar dalam kegiatan kami<br>segera mengikuti agenda dan selamat menikmati acara<br>yang kamu pilih</p>
+      <button class="berhasil-btn" onclick="showPage('forum')">KEMBALI DAN SELESAI</button>
+    </div>
+  </div>
+    
+  <div id="kelolaAgenda" class="container">
+      <div class="kelola-agenda-box">
+          <div class="left-panel">
+              <button class="btn-tambah-kegiatan" onclick="showPage('editAgenda')">+TAMBAH KEGIATAN</button>
+               <button class="btn-kembali-homepage" onclick="showPage('homepagePanitia')">KEMBALI KE HOMEPAGE</button>
+          </div>
+          <div class="right-panel">
+              <h2>HALO</h2>
+              <div class="profile">
+                  <img src="profile.jpg" alt="Admin" class="profile-pic">
+                  <h3 id="panitiaNameKelola">NAMA PANITIA</h3>
+              </div>
+               <button class="btn-kelola-agenda" onclick="showPage('editAgenda')">KONFIRMASI PENGEDITAN</button>
+              <button class="btn-kelola-agenda" onclick="showPage('daftarMurid')">CEK DAFTAR MURID</button>
+          </div>
+      </div>
+  </div>
+
+  <div id="editAgenda" class="container">
+      <div class="edit-agenda-box">
+          <h2>EDIT AGENDA</h2>
+          <form id="editForm" class="form-edit-agenda">
+              <div class="form-group">
+                  <label for="namaKegiatan">Nama Kegiatan</label>
+                  <input type="text" id="namaKegiatan" placeholder="Contoh: Pentas Seni" required>
+              </div>
+              <div class="form-group">
+                  <label for="tanggalMulai">Tanggal Mulai</label>
+                  <input type="date" id="tanggalMulai" required>
+              </div>
+              <div class="form-group">
+                  <label for="deskripsiKegiatan">Deskripsi Kegiatan</label>
+                  <textarea id="deskripsiKegiatan" rows="4" placeholder="Deskripsi singkat kegiatan..."></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="gambarKegiatan">Pilih Gambar Kegiatan</label>
+                  <input type="file" id="gambarKegiatan" accept="image/*">
+              </div>
+              <div class="btn-group-edit">
+                  <button type="button" class="btn-edit-agenda btn-simpan" onclick="simpanAgenda()">SIMPAN</button>
+                  <button type="button" class="btn-edit-agenda btn-batal" onclick="showPage('kelolaAgenda')">BATAL</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <div id="daftarMurid" class="container">
+      <div class="daftar-murid-container">
+          <div class="header">
+              <div class="profile-header">
+                  <img src="profile.jpg" alt="Admin" class="profile-pic">
+                  <h2>PANITIA</h2>
+              </div>
+              <img src="logosmk1.png" alt="Logo SMK" class="smk-logo">
+          </div>
+          <div id="muridList" class="daftar-murid-grid">
+              <!-- Daftar murid akan diisi secara dinamis -->
+          </div>
+          <div class="btn-group-murid">
+              <button class="btn-konfirmasi-murid" onclick="konfirmasiMurid()">KONFIRMASI DAN TERIMA SEMUA MURID</button>
+              <br>
+              <button class="btn-kembali-forum" onclick="showPage('forum')">KEMBALI DAN SELESAI</button>
+          </div>
+      </div>
+  </div>
+  
+  <script>
+    let registeredStudents = JSON.parse(localStorage.getItem('registeredStudents')) || [];
+    let selectedKegiatan = '';
+    let currentPanitiaName = '';
+
+    // Inisialisasi
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cek jika ada data di localStorage
+      if (localStorage.getItem('panitiaName')) {
+        currentPanitiaName = localStorage.getItem('panitiaName');
+        document.getElementById('panitiaNameKelola').textContent = currentPanitiaName;
+      }
+      
+      // Render daftar murid jika ada
+      renderMuridList();
+    });
+
+    function showPage(pageId) {
+      // Sembunyikan semua halaman
+      document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+      
+      // Tampilkan halaman yang dipilih
+      document.getElementById(pageId).classList.add('active');
+      
+      // Scroll ke atas
+      window.scrollTo(0, 0);
+      
+      // Jika halaman kelola agenda, update nama panitia
+      if (pageId === 'kelolaAgenda') {
+        updatePanitiaName();
+      } else if (pageId === 'daftarMurid') {
+        renderMuridList();
+      }
+    }
+    
+    function loginPanitia() {
+      const panitiaId = document.getElementById('panitiaIdInput').value;
+      const loginBtn = document.getElementById('loginPanitiaBtn');
+      
+      if (!panitiaId) {
+        showNotification('Mohon masukkan ID / Nama panitia!', 'error');
+        return;
+      }
+      
+      // Simpan nama panitia
+      currentPanitiaName = panitiaId;
+      localStorage.setItem('panitiaName', panitiaId);
+      
+      // Tampilkan loading
+      loginBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+      
+      // Simulasi proses login
+      setTimeout(() => {
+        showNotification('Login panitia berhasil!', 'success');
+        showPage('homepagePanitia');
+        loginBtn.innerHTML = 'LOGIN';
+      }, 1500);
+    }
+    
+    function loginMurid() {
+      const loginBtn = document.getElementById('loginMuridBtn');
+      
+      // Tampilkan loading
+      loginBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+      
+      // Simulasi proses login
+      setTimeout(() => {
+        showNotification('Login murid berhasil!', 'success');
+        showPage('homepageMurid');
+        loginBtn.innerHTML = 'LOGIN';
+      }, 1500);
+    }
+    
+    function updatePanitiaName() {
+      if (currentPanitiaName) {
+        document.getElementById('panitiaNameKelola').textContent = currentPanitiaName.toUpperCase();
+      }
+    }
+
+    function pilihKegiatan(kegiatan) {
+      selectedKegiatan = kegiatan;
+      showPage('konfirmasi');
+    }
+
+    function daftarKegiatan() {
+      const namaMurid = document.getElementById('namaMurid').value;
+      const kelasMurid = document.getElementById('kelasMurid').value;
+      
+      if (!namaMurid || !kelasMurid) {
+        showNotification('Nama dan kelas tidak boleh kosong!', 'error');
+        return;
+      }
+      
+      // Tambahkan murid ke daftar
+      registeredStudents.push({ 
+        nama: namaMurid, 
+        kelas: kelasMurid, 
+        kegiatan: selectedKegiatan,
+        tanggalDaftar: new Date().toLocaleDateString('id-ID')
+      });
+      
+      // Simpan ke localStorage
+      localStorage.setItem('registeredStudents', JSON.stringify(registeredStudents));
+      
+      // Update pesan berhasil
+      document.getElementById('pesanBerhasil').innerHTML = `
+        SELAMAT ${namaMurid.toUpperCase()}!!<br>
+        Kamu sudah terdaftar dalam kegiatan ${selectedKegiatan}<br>
+        Jangan lupa datang pada tanggal yang telah ditentukan
+      `;
+      
+      showNotification('Pendaftaran berhasil!', 'success');
+      showPage('berhasil');
+    }
+    
+    function renderMuridList() {
+      const muridListContainer = document.getElementById('muridList');
+      muridListContainer.innerHTML = '';
+
+      if (registeredStudents.length > 0) {
+        registeredStudents.forEach(murid => {
+          const muridItem = document.createElement('div');
+          muridItem.classList.add('murid-item');
+          muridItem.innerHTML = `
+            <h4>${murid.nama.toUpperCase()}</h4>
+            <p>Kelas: ${murid.kelas}</p>
+            <p>Kegiatan: ${murid.kegiatan.toUpperCase()}</p>
+            <p>Tanggal Daftar: ${murid.tanggalDaftar}</p>
+          `;
+          muridListContainer.appendChild(muridItem);
+        });
+      } else {
+        muridListContainer.innerHTML = '<p style="color: black; text-align: center; font-weight: bold; width: 100%; grid-column: span 2;">Belum ada murid yang mendaftar.</p>';
+      }
+    }
+
+    function konfirmasiMurid() {
+      if (registeredStudents.length === 0) {
+        showNotification('Tidak ada murid yang perlu dikonfirmasi!', 'error');
+        return;
+      }
+      
+      // Simulasi proses konfirmasi
+      showNotification('Semua murid berhasil dikonfirmasi!', 'success');
+      
+      // Kosongkan daftar murid
+      registeredStudents = [];
+      localStorage.setItem('registeredStudents', JSON.stringify(registeredStudents));
+      
+      // Render ulang daftar
+      renderMuridList();
+    }
+
+    function simpanAgenda() {
+      const namaKegiatan = document.getElementById('namaKegiatan').value;
+      const tanggalMulai = document.getElementById('tanggalMulai').value;
+      
+      if (!namaKegiatan || !tanggalMulai) {
+        showNotification('Nama dan tanggal kegiatan harus diisi!', 'error');
+        return;
+      }
+      
+      showNotification('Agenda berhasil disimpan!', 'success');
+      
+      // Kembali ke halaman kelola agenda setelah 1.5 detik
+      setTimeout(() => {
+        showPage('kelolaAgenda');
+      }, 1500);
+    }
+
+    function showNotification(message, type) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type} show`;
+          
+      // Sembunyikan notifikasi setelah 3 detik
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>   
